@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include "DHT.h"
+#include "esp_sleep.h"
 
 #define DHTTYPE DHT11
 
@@ -197,6 +198,11 @@ void readSensor(){
     tds_status = 1;
   }
   publishSensorValues(ph,ph_status, humidity,temp, dht_status, tdsValue, tds_status);
+
+    // Put the ESP32 into deep sleep mode for 30 seconds
+    Serial.println("Entering deep sleep for 30 seconds...");
+    esp_sleep_enable_timer_wakeup(30 * 1000000);
+    esp_deep_sleep_start();
   }
 }
 
